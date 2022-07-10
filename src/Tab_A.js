@@ -33,6 +33,7 @@ function Tab_A({route, navigation}) {
           title: 'ShopList',
         }}
       />
+      
       {data.map((item, i) => (
         <Stack.Screen
           name={item.title}

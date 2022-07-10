@@ -3,14 +3,6 @@ import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 function ProductDetail({item, route, navigation}) {
-  const onPressA = () => {
-    navigation.navigate('TabB');
-  };
-
-  const func2 = () => {
-    navigation.popToTop();
-  };
-
   return (
     <View style={styles.view}>
       <View style={styles.topBanner}>
@@ -50,11 +42,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#fff',
-    padding: 20
+    padding: 20,
+    fontFamily: "Roboto-Bold",
   },
   text: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: "Roboto-Bold",
     color: '#000000',
   },
   image: {
@@ -77,23 +70,28 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '500',
-    color: '#000000'
+    color: '#000000',
+    fontFamily: "Roboto-Bold",
   },
   rate: {
     fontWeight: '600',
     color: '#000000',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: "Roboto-Bold",
   },
   count: {
-    color: '#000000'
+    color: '#000000',
+    fontFamily: "Roboto-Medium",
   },
   cate: {
     marginTop: 5,
-    fontSize: 20
+    fontSize: 20,
+    fontFamily: "Roboto-Regular",
   },
   desc: {
     fontSize: 16,
     color: '#000',
+    fontFamily: "Roboto-Bold",
     fontWeight: '500'
   },
   botBannerBottom: {
@@ -104,7 +102,8 @@ const styles = StyleSheet.create({
   price: {
     fontWeight: '600',
     fontSize: 20,
-    color: '#000'
+    fontFamily: "Roboto-Regular",
+    color: '#000',
   }
 });
 
