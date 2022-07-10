@@ -60,17 +60,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 13,
+    fontSize: 14,
     paddingHorizontal: 7,
     color: '#000',
     textTransform: 'capitalize',
     flexWrap: 'wrap',
     fontWeight: '600',
+    fontFamily:"Roboto-Bold",
   },
   subText: {
     fontSize: 12,
     paddingHorizontal: 7,
-    fontWeight: 'bold',
+    fontFamily:"Roboto-Bold",
     color: '#00000090',
     textTransform: 'capitalize',
     flexWrap: 'wrap'
