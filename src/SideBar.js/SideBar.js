@@ -82,7 +82,11 @@ function SideBar() {
         drawerLabelStyle: {fontSize: 19,},
         headerTitleAlign: 'center',
         headerTintColor: "#fff",
-        headerStyle: {backgroundColor: '#33dd'}
+        headerStyle: {backgroundColor: '#33dd'},
+        drawerIcon:({focused, size, color}) => {
+          color = focused ? '#000' : '#33dd'
+          return <Icon name={"person-sharp"} size={25} color={color} />;
+        },
       }}
 
       >
@@ -91,8 +95,7 @@ function SideBar() {
         <Drawer.Screen
           key={item.id.value}
           name={item.name.first}
-          children = {()=> <SideBarcomps item={item}/>}
-          
+          children = {()=> <SideBarcomps item={item}/>}  
         />
       ))}
     </Drawer.Navigator>

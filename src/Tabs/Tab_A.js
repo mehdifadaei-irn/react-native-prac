@@ -5,17 +5,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
-import ProductDetail from './Stacks/ProductDetail';
-import InitialStack from './Stacks/InitialStack';
+import ProductDetail from '../Stacks/ProductDetail';
+import InitialStack from '../Stacks/InitialStack';
+import {FavContext} from '../store/context/context'
 
 function Tab_A({route, navigation}) {
+  const {stackData, fetchStackData} = React.useContext(FavContext);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then(response => response.json())
-      .then(json => setData(json))
-      .catch(error => console.error(error));
+    fetchStackData();
   }, []);
 
   return (
@@ -34,7 +33,7 @@ function Tab_A({route, navigation}) {
         }}
       />
       
-      {data.map((item, i) => (
+      {stackData.map((item, i) => (
         <Stack.Screen
           name={item.title}
           key={item.id}
