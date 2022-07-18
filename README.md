@@ -1,5 +1,5 @@
-# my project has 4 main tab and in each tab has their own navigation
-## first tab is Stack 
-## second tab is simple Drawer
-## third tab is simple MaterialTopBar
-## fourth tab is Side bar with Drawer
+# Expense trac ker app using context
+## has 2 tab 
+## first for recent expenses
+## second for all expenses
+## you can add, update, delete each expense
