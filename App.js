@@ -1,49 +1,99 @@
-import 'react-native-gesture-handler';
-import * as React from 'react';
-import {Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StatusBar,
+  TextInput,
+  Button,
+  FlatList,
+  Pressable,
+  Platform,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
+import SQLite from 'react-native-sqlite-storage';
+import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import Setting from './src/screens/Setting';
+import Home from './src/screens/Home';
+import SettingMain from './src/screens/SettingMain';
+import MainContextProvider from './src/store/context-store';
+import Paper from './src/components/Paper';
 
-import Tab_A from './src/Tab_A';
-import Tab_B from './src/Tab_B';
-import Tab_C from './src/Tab_C';
+// import Bse from './Bse'
 
-const Tab = createBottomTabNavigator();
+function openDatabases() {
+  if (Platform.OS === 'web') {
+    return {
+      transaction: () => {
+        return {
+          executeSql: () => {},
+        };
+      },
+    };
+  }
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, size, color}) => {
-            let iconName;
-            if (route.name === 'TabA') {
-              iconName = 'layers-outline';
-              size = focused ? 30 : 25;
-            } else if (route.name === 'TabB') {
-              iconName = 'settings-outline';
-              size = focused ? 30 : 25;
-            } else if (route.name === 'TabC') {
-              iconName = 'podium-outline';
-              size = focused ? 30 : 25;
-            }
-            return <Icon name={iconName} size={size} color={color} />;
-          },
-          header: () => null,
-          tabBarLabelStyle: {
-            fontSize: 16,
-          },
-        })}>
-          
-        <Tab.Screen name="TabA" component={Tab_A} options={{title: 'Stacks'}} />
-        <Tab.Screen name="TabB" component={Tab_B} options={{title: 'Drawer'}} />
-        <Tab.Screen
-          name="TabC"
-          component={Tab_C}
-          options={{title: 'Top Bar'}}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+  const db = SQLite.openDatabase(
+    {
+      name: 'rn_sqlite',
+      location: 'default',
+    },
+    () => {},
+    error => {
+      console.log(error);
+    },
   );
+  return db;
 }
+
+const db = openDatabases();
+
+const Tabs = createBottomTabNavigator();
+
+
+const App = () => {
+  return (
+    <MainContextProvider>
+      <PaperProvider>
+        <NavigationContainer>
+          <Tabs.Navigator
+            initialRouteName="settingMain"
+            screenOptions={{
+              headerShown: false,
+            }}>
+            <Tabs.Screen
+              name="home"
+              component={Home}
+              options={{
+                tabBarIcon: ({size, color}) => (
+                  <Icon name="home-outline" color={color} size={size} />
+                ),
+                tabBarLabelStyle: {
+                  fontSize: 13,
+                },
+                tabBarLabel: 'Home',
+              }}
+            />
+            {/* <Tabs.Screen name="setting" component={Setting} /> */}
+            <Tabs.Screen
+              name="settingMain"
+              component={SettingMain}
+              options={{
+                tabBarIcon: ({size, color}) => (
+                  <Icon name="settings-outline" color={color} size={size} />
+                ),
+                tabBarLabelStyle: {
+                  fontSize: 13,
+                },
+                tabBarLabel: 'SettingMain',
+              }}
+            />
+            <Tabs.Screen name='paper' component={Paper} />
+          </Tabs.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </MainContextProvider>
+  );
+};
+
+export default App;
