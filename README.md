@@ -1,3 +1,2 @@
-# Expense tracker app using context
-##  has 5 main tab
-## each tab is deferent animation practice project
+# Practice project
+##  working with sqlite and context in react native 
