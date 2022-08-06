@@ -1,89 +1,99 @@
-import 'react-native-gesture-handler';
-import 'react-native-reanimated';
-import * as React from 'react';
-import {StatusBar, Text, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StatusBar,
+  TextInput,
+  Button,
+  FlatList,
+  Pressable,
+  Platform,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import SQLite from 'react-native-sqlite-storage';
+import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import Setting from './src/screens/Setting';
+import Home from './src/screens/Home';
+import SettingMain from './src/screens/SettingMain';
+import MainContextProvider from './src/store/context-store';
+import Paper from './src/components/Paper';
 
-import Prac1 from './screens/Prac1';
-import Prac2 from './screens/Prac2';
-import Prac3 from './screens/Prac3';
-import Prac4 from './screens/Prac4';
-import Prac5 from './screens/Prac5';
+// import Bse from './Bse'
 
-const Tab = createBottomTabNavigator();
+function openDatabases() {
+  if (Platform.OS === 'web') {
+    return {
+      transaction: () => {
+        return {
+          executeSql: () => {},
+        };
+      },
+    };
+  }
 
-export default function App() {
-  return (
-    <>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{
-            header: () => null,
-            tabBarStyle: {
-              backgroundColor: '#4f8ee0',
-            },
-            tabBarActiveTintColor: '#fff',
-            tabBarInactiveTintColor: '#000',
-            tabBarLabelStyle: {
-              fontSize: 15,
-            },
-          }}>
-          <Tab.Screen
-            name="prac1"
-            component={Prac1}
-            options={{
-              tabBarIcon: ({size}) => (
-                <Icon name="image" size={size} color="#000" />
-              ),
-              tabBarLabel: 'slider',
-            }}
-          />
-          <Tab.Screen
-            name="prac2"
-            component={Prac2}
-            options={{
-              tabBarIcon: ({size}) => (
-                <Icon name="image" size={size} color="#000" />
-              ),
-              tabBarLabel: 'Blur',
-            }}
-          />
-          <Tab.Screen
-            name="prac3"
-            component={Prac3}
-            options={{
-              tabBarIcon: ({size}) => (
-                <Icon name="image" size={size} color="#000" />
-              ),
-              tabBarLabel: 'Sticky',
-            }}
-          />
-          <Tab.Screen
-            name="prac4"
-            component={Prac4}
-            options={{
-              tabBarIcon: ({size}) => (
-                <Icon name="image" size={size} color="#000" />
-              ),
-              tabBarLabel: 'carousel',
-            }}
-          />
-
-          <Tab.Screen
-            name="prac5"
-            component={Prac5}
-            options={{
-              tabBarIcon: ({size}) => (
-                <Icon name="image" size={size} color="#000" />
-              ),
-              tabBarLabel: 'Bar',
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </>
+  const db = SQLite.openDatabase(
+    {
+      name: 'rn_sqlite',
+      location: 'default',
+    },
+    () => {},
+    error => {
+      console.log(error);
+    },
   );
+  return db;
 }
+
+const db = openDatabases();
+
+const Tabs = createBottomTabNavigator();
+
+
+const App = () => {
+  return (
+    <MainContextProvider>
+      <PaperProvider>
+        <NavigationContainer>
+          <Tabs.Navigator
+            initialRouteName="settingMain"
+            screenOptions={{
+              headerShown: false,
+            }}>
+            <Tabs.Screen
+              name="home"
+              component={Home}
+              options={{
+                tabBarIcon: ({size, color}) => (
+                  <Icon name="home-outline" color={color} size={size} />
+                ),
+                tabBarLabelStyle: {
+                  fontSize: 13,
+                },
+                tabBarLabel: 'Home',
+              }}
+            />
+            {/* <Tabs.Screen name="setting" component={Setting} /> */}
+            <Tabs.Screen
+              name="settingMain"
+              component={SettingMain}
+              options={{
+                tabBarIcon: ({size, color}) => (
+                  <Icon name="settings-outline" color={color} size={size} />
+                ),
+                tabBarLabelStyle: {
+                  fontSize: 13,
+                },
+                tabBarLabel: 'SettingMain',
+              }}
+            />
+            <Tabs.Screen name='paper' component={Paper} />
+          </Tabs.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </MainContextProvider>
+  );
+};
+
+export default App;
